@@ -14,11 +14,11 @@ import models.FichaBibliografica;
 
 public class LibroDAO implements GenericDAO<Libro> {
 
-    //Query para insertar un libro en la db
+    
     // El id es AUTO_INCREMENT y se obtiene con RETURN_GENERATED_KEYS.
     private static final String INSERT_SQL = "INSERT INTO libros (id_ficha, titulo, autor, anio_publicacion, genero) VALUES (?, ?,?,?,?)";
 
-    //Query para actualizar un libro en la db
+    // actualizar un libro en la db
     //NO actualiza el flag eliminado (solo se modifica en soft delete).
     private static final String UPDATE_SQL = "UPDATE libros SET id_ficha = ?, titulo = ?, autor = ?,  anio_publicacion = ?, genero = ? WHERE id = ?";
 
@@ -27,7 +27,7 @@ public class LibroDAO implements GenericDAO<Libro> {
     private static final String DELETE_SQL = "UPDATE libros SET eliminado = TRUE WHERE id = ?";
 
     //Obtener libro por id
-    //Muestra el isbn que obtiene de la tabla FichaBibliografica
+   
     private static final String SELECT_LIBRO_BY_ID_SQL = "SELECT l.*, f.isbn "
             + "FROM libros l "
             + "LEFT JOIN fichabibliografica f ON l.fichabibliografica_id = f.id "
@@ -209,4 +209,5 @@ private void setFichaBibliograficaId(PreparedStatement stmt, int parameterIndex,
     }
 
 }
+
 
