@@ -1,6 +1,8 @@
 # Integrador-Programacion_II
 
-Programacion II Trabajo Final Integrador (TFI)
+IMPORTANTE: VER EN LA RAMA "MASTER"
+
+Programacion II Trabajo Final Integrador (TFI) 
 
 Fecha de entrega: 17/11/2025
 
