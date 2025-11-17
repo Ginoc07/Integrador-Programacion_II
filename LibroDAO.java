@@ -97,11 +97,8 @@ public void eliminar(Long id, Connection conn) throws Exception {
     }
 }
 
-/// Mostrar libro por ID (transaccional
-    /// @param id)
-    /// @param conn
-    /// @return 
-    /// @throws java.lang.Exception
+/// Mostrar libro por ID 
+  
 
 public Libro leer(Long id, Connection conn) throws Exception {
     try (PreparedStatement stmt = conn.prepareStatement(SELECT_LIBRO_BY_ID_SQL)) {
@@ -160,14 +157,14 @@ public List<Libro> leerTodos(Connection conn) throws Exception {
         return libros;
     }
 
-    //Setear parametros de libros
+    //parametros de libros
     
 private void setLibroParameters(PreparedStatement stmt, Libro libro) throws SQLException {
     stmt.setString(1, libro.getTitulo());
     stmt.setString(2, libro.getAutor());
     stmt.setInt(3, libro.getAnioPublicacion());
     stmt.setString(4, libro.getGenero());
-    setFichaBibliograficaId(stmt, 5, libro); // maneja NULL si no tiene ficha
+    setFichaBibliograficaId(stmt, 5, libro); 
 }
 
 //Obtiene el id autogerado por la bd luego del insert
@@ -199,7 +196,7 @@ private void setFichaBibliograficaId(PreparedStatement stmt, int parameterIndex,
         libro.setAnioPublicacion(rs.getInt("anio_publicacion"));
         libro.setGenero(rs.getString("genero"));
 
-        // Manejo de LEFT JOIN: verificar si existe ficha bibliográfica
+        // Manejo de LEFT JOIN
         long fichaId = rs.getLong("fichabibliografica_id");
         if (fichaId > 0 && !rs.wasNull()) {
             FichaBibliografica ficha = new FichaBibliografica();
@@ -212,3 +209,4 @@ private void setFichaBibliograficaId(PreparedStatement stmt, int parameterIndex,
     }
 
 }
+
