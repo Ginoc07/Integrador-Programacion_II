@@ -1,6 +1,6 @@
 # Integrador-Programacion_II
 
-IMPORTANTE: VER EN LA RAMA "MASTER"
+
 
 Programacion II Trabajo Final Integrador (TFI) 
 
