@@ -1,4 +1,4 @@
-package prog2int.Dao;
+package TPI_grupo94.Dao;
 
 import java.sql.Connection;
 import java.util.List;

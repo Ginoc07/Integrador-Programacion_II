@@ -1,4 +1,4 @@
-package Fichaylibro;
+package TPI_grupo94.Dao;
 
 import Clases.FichaBibliografica;
 import FichaBibliografica;

@@ -1,4 +1,4 @@
-package prog2int.Models;
+package TPI_grupo94.Models;
 
 /**
  * Clase base abstracta para todas las entidades del sistema.

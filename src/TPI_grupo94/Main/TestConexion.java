@@ -1,9 +1,9 @@
-package prog2int.Main;
+package TPI_grupo94.Main;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import prog2int.Config.DatabaseConnection;
+import TPI_grupo94.Config.DatabaseConnection;
 
 public class TestConexion {
     public static void main(String[] args) {

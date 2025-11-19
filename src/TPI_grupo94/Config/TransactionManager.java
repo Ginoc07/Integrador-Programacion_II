@@ -1,4 +1,4 @@
-package prog2int.Config;
+package TPI_grupo94.Config;
 
 import java.sql.Connection;
 import java.sql.SQLException;
