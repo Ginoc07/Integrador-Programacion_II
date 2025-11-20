@@ -9,78 +9,63 @@ import TPI_grupo94.Service.LibroServiceImpl;
 public class MenuHandler {
   
     private final Scanner scanner;
-    private final PersonaServiceImpl personaService;
+    private final LibroServiceImpl libroService;
 
-    public MenuHandler(Scanner scanner, PersonaServiceImpl personaService) {
+    public MenuHandler(Scanner scanner, LibroServiceImpl libroService) {
         if (scanner == null) {
             throw new IllegalArgumentException("Scanner no puede ser null");
         }
-        if (personaService == null) {
-            throw new IllegalArgumentException("PersonaService no puede ser null");
+        if (libroService == null) {
+            throw new IllegalArgumentException("libroService no puede ser null");
         }
         this.scanner = scanner;
-        this.personaService = personaService;
+        this.libroService = libroService;
     }
 
-    public void crearPersona() {
+    public void crearLibro() {
         try {
             System.out.print("Nombre: ");
-            String nombre = scanner.nextLine().trim();
-            System.out.print("Apellido: ");
-            String apellido = scanner.nextLine().trim();
-            System.out.print("DNI: ");
-            String dni = scanner.nextLine().trim();
+            String nombre = scanner.nextLine().trim(); //VEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRR
+           
 
-            Domicilio domicilio = null;
-            System.out.print("¿Desea agregar un domicilio? (s/n): ");
+            FichaBibliografica fichaBibliografica = null;
+            System.out.print("¿Desea agregar una Ficha Bibliografica? (s/n): ");
             if (scanner.nextLine().equalsIgnoreCase("s")) {
-                domicilio = crearDomicilio();
+                fichaBibliografica = crearFichaBibliografica();
             }
 
-            Persona persona = new Persona(0, nombre, apellido, dni);
-            persona.setDomicilio(domicilio);
-            personaService.insertar(persona);
-            System.out.println("Persona creada exitosamente con ID: " + persona.getId());
+            Libro libro = new Libro(nombre); //MODIFICAR PARAMETROOOOOOOOOOOOSSSSSSSSSSSSSSSSSSSSSSSSSS, libro solo tenia id
+            libro.setFichaBibliografica(fichaBibliografica);
+            libroService.insertar(libro);
+            System.out.println("Libro creado exitosamente con ID: " + libro.getId());
         } catch (Exception e) {
-            System.err.println("Error al crear persona: " + e.getMessage());
+            System.err.println("Error al crear libro: " + e.getMessage());
         }
     }
 
-    public void listarPersonas() {
+
+    public void listarLibros() {
         try {
-            System.out.print("¿Desea (1) listar todos o (2) buscar por nombre/apellido? Ingrese opcion: ");
-            int subopcion = Integer.parseInt(scanner.nextLine());
-
-            List<Persona> personas;
-            if (subopcion == 1) {
-                personas = personaService.getAll();
-            } else if (subopcion == 2) {
-                System.out.print("Ingrese texto a buscar: ");
-                String filtro = scanner.nextLine().trim();
-                personas = personaService.buscarPorNombreApellido(filtro);
-            } else {
-                System.out.println("Opcion invalida.");
+            System.out.print("Se listan todos los libros a continuacion: ");
+         
+            List<Libro> libros;
+            libros = libroService.getAll();
+         
+            if (libros.isEmpty()) {
+                System.out.println("No se encontraron libros.");
                 return;
             }
 
-            if (personas.isEmpty()) {
-                System.out.println("No se encontraron personas.");
-                return;
-            }
-
-            for (Persona p : personas) {
-                System.out.println("ID: " + p.getId() + ", Nombre: " + p.getNombre() +
-                        ", Apellido: " + p.getApellido() + ", DNI: " + p.getDni());
-                if (p.getDomicilio() != null) {
-                    System.out.println("   Domicilio: " + p.getDomicilio().getCalle() +
-                            " " + p.getDomicilio().getNumero());
-                }
+            for (Libro l : libros) {
+                System.out.println("ID libro: " + l.getId() );
             }
         } catch (Exception e) {
-            System.err.println("Error al listar personas: " + e.getMessage());
+            System.err.println("Error al listar libros: " + e.getMessage());
         }
     }
 
+    //--------------
+    
     public void actualizarPersona() {
         try {
             System.out.print("ID de la persona a actualizar: ");
