@@ -6,6 +6,7 @@ Programacion II Trabajo Final Integrador (TFI) - Grupo 94
 
 Fecha de entrega: 17/11/2025
 
+Link del video: -------
 
 Integrantes: 
 
@@ -64,4 +65,4 @@ El foco principal: Relación 1 -> 1 unidireccional entre Libro y FichaBibliograf
 - Se filtran productos disponibles.
 - Se listan las categorías disponibles.
 
-Link del video: -------
+------------------------------------------------------------------------------------------------------
