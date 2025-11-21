@@ -37,7 +37,7 @@ El foco principal: Relación 1 -> 1 unidireccional entre Libro y FichaBibliograf
    String url = "jdbc:mysql://localhost:3306/inventario";
    String user = "root";
    String password = "tu_clave";
-### 🧪 3. Cómo compilar y ejecutar
+###  Cómo compilar y ejecutar
 
 ## Compilación y ejecución
 
