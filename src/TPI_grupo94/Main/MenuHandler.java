@@ -1,278 +1,247 @@
 package TPI_grupo94.Main;
 
-import TPI_grupo94.Models.Libro;
-import java.util.List;
 import java.util.Scanner;
-import TPI_grupo94.Models.FichaBibliografica;
+
+import tpi_grupo94.Models.Libro;
+import tpi_grupo94.Models.FichaBibliografica;
 import TPI_grupo94.Service.LibroServiceImpl;
 
+import java.util.List;
+
 public class MenuHandler {
-  
+
     private final Scanner scanner;
     private final LibroServiceImpl libroService;
 
     public MenuHandler(Scanner scanner, LibroServiceImpl libroService) {
-        if (scanner == null) {
-            throw new IllegalArgumentException("Scanner no puede ser null");
-        }
-        if (libroService == null) {
-            throw new IllegalArgumentException("libroService no puede ser null");
-        }
         this.scanner = scanner;
         this.libroService = libroService;
     }
 
+    // ============================================================
+    // 1. CREAR LIBRO
+    // ============================================================
     public void crearLibro() {
         try {
-            System.out.print("Nombre: ");
-            String nombre = scanner.nextLine().trim(); //VEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRR
-           
+            Libro libro = new Libro();
+            libroService.insertar(libro);
+            System.out.println("Libro creado con ID: " + libro.getId());
 
-            FichaBibliografica fichaBibliografica = null;
-            System.out.print("¿Desea agregar una Ficha Bibliografica? (s/n): ");
-            if (scanner.nextLine().equalsIgnoreCase("s")) {
-                fichaBibliografica = crearFichaBibliografica();
+            System.out.print("¿Agregar ficha bibliográfica? (s/n): ");
+            if (scanner.nextLine().trim().equalsIgnoreCase("s")) {
+                FichaBibliografica ficha = crearFichaBibliografica(libro.getId());
+                libroService.insertarFicha(ficha);
+                System.out.println("Ficha creada.");
             }
 
-            Libro libro = new Libro(nombre); //MODIFICAR PARAMETROOOOOOOOOOOOSSSSSSSSSSSSSSSSSSSSSSSSSS, libro solo tenia id
-            libro.setFichaBibliografica(fichaBibliografica);
-            libroService.insertar(libro);
-            System.out.println("Libro creado exitosamente con ID: " + libro.getId());
         } catch (Exception e) {
             System.err.println("Error al crear libro: " + e.getMessage());
         }
     }
 
-
+    // ============================================================
+    // 2. LISTAR LIBROS
+    // ============================================================
     public void listarLibros() {
         try {
-            System.out.print("Se listan todos los libros a continuacion: ");
-         
-            List<Libro> libros;
-            libros = libroService.getAll();
-         
+            List<Libro> libros = libroService.getAll();
+
             if (libros.isEmpty()) {
-                System.out.println("No se encontraron libros.");
+                System.out.println("No hay libros cargados.");
                 return;
             }
 
             for (Libro l : libros) {
-                System.out.println("ID libro: " + l.getId() );
+                System.out.println("Libro ID: " + l.getId());
             }
+
         } catch (Exception e) {
             System.err.println("Error al listar libros: " + e.getMessage());
         }
     }
 
-    //--------------
-    
-    public void actualizarPersona() {
+    // ============================================================
+    // 3. ACTUALIZAR LIBRO
+    // ============================================================
+    public void actualizarLibro() {
+        System.out.println("El libro no tiene campos editables. Use opciones de ficha.");
+    }
+
+    // ============================================================
+    // 4. ELIMINAR LIBRO
+    // ============================================================
+    public void eliminarLibro() {
         try {
-            System.out.print("ID de la persona a actualizar: ");
+            System.out.print("ID del libro: ");
             int id = Integer.parseInt(scanner.nextLine());
-            Persona p = personaService.getById(id);
 
-            if (p == null) {
-                System.out.println("Persona no encontrada.");
+            libroService.eliminar(id);
+            libroService.eliminarFichaPorLibro(id);
+
+            System.out.println("Libro y ficha eliminados.");
+
+        } catch (Exception e) {
+            System.err.println("Error al eliminar libro: " + e.getMessage());
+        }
+    }
+
+    // ============================================================
+    // 5. CREAR FICHA
+    // ============================================================
+    public void crearFicha() {
+        try {
+            System.out.print("ID del libro: ");
+            int idLibro = Integer.parseInt(scanner.nextLine());
+
+            FichaBibliografica ficha = crearFichaBibliografica(idLibro);
+            libroService.insertarFicha(ficha);
+
+            System.out.println("Ficha creada.");
+
+        } catch (Exception e) {
+            System.err.println("Error al crear ficha: " + e.getMessage());
+        }
+    }
+
+    // ============================================================
+    // 6. LISTAR FICHAS
+    // ============================================================
+    public void listarFichas() {
+        try {
+            List<FichaBibliografica> fichas = libroService.getAllFichas();
+
+            if (fichas.isEmpty()) {
+                System.out.println("No hay fichas cargadas.");
                 return;
             }
 
-            System.out.print("Nuevo nombre (actual: " + p.getNombre() + ", Enter para mantener): ");
-            String nombre = scanner.nextLine().trim();
-            if (!nombre.isEmpty()) {
-                p.setNombre(nombre);
+            for (FichaBibliografica f : fichas) {
+                System.out.println(f);
             }
 
-            System.out.print("Nuevo apellido (actual: " + p.getApellido() + ", Enter para mantener): ");
-            String apellido = scanner.nextLine().trim();
-            if (!apellido.isEmpty()) {
-                p.setApellido(apellido);
-            }
-
-            System.out.print("Nuevo DNI (actual: " + p.getDni() + ", Enter para mantener): ");
-            String dni = scanner.nextLine().trim();
-            if (!dni.isEmpty()) {
-                p.setDni(dni);
-            }
-
-            actualizarDomicilioDePersona(p);
-            personaService.actualizar(p);
-            System.out.println("Persona actualizada exitosamente.");
         } catch (Exception e) {
-            System.err.println("Error al actualizar persona: " + e.getMessage());
+            System.err.println("Error al listar fichas: " + e.getMessage());
         }
     }
 
-    public void eliminarPersona() {
+    // ============================================================
+    // 7. ACTUALIZAR FICHA POR ID
+    // ============================================================
+    public void actualizarFichaPorId() {
         try {
-            System.out.print("ID de la persona a eliminar: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            personaService.eliminar(id);
-            System.out.println("Persona eliminada exitosamente.");
-        } catch (Exception e) {
-            System.err.println("Error al eliminar persona: " + e.getMessage());
-        }
-    }
+            System.out.print("ID de la ficha: ");
+            int idFicha = Integer.parseInt(scanner.nextLine());
 
-    public void crearDomicilioIndependiente() {
-        try {
-            Domicilio domicilio = crearDomicilio();
-            personaService.getDomicilioService().insertar(domicilio);
-            System.out.println("Domicilio creado exitosamente con ID: " + domicilio.getId());
-        } catch (Exception e) {
-            System.err.println("Error al crear domicilio: " + e.getMessage());
-        }
-    }
+            FichaBibliografica ficha = libroService.getFichaById(idFicha);
 
-    public void listarDomicilios() {
-        try {
-            List<Domicilio> domicilios = personaService.getDomicilioService().getAll();
-            if (domicilios.isEmpty()) {
-                System.out.println("No se encontraron domicilios.");
-                return;
-            }
-            for (Domicilio d : domicilios) {
-                System.out.println("ID: " + d.getId() + ", " + d.getCalle() + " " + d.getNumero());
-            }
-        } catch (Exception e) {
-            System.err.println("Error al listar domicilios: " + e.getMessage());
-        }
-    }
-
-    public void actualizarDomicilioPorId() {
-        try {
-            System.out.print("ID del domicilio a actualizar: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            Domicilio d = personaService.getDomicilioService().getById(id);
-
-            if (d == null) {
-                System.out.println("Domicilio no encontrado.");
+            if (ficha == null) {
+                System.out.println("Ficha no encontrada.");
                 return;
             }
 
-            System.out.print("Nueva calle (actual: " + d.getCalle() + ", Enter para mantener): ");
-            String calle = scanner.nextLine().trim();
-            if (!calle.isEmpty()) {
-                d.setCalle(calle);
-            }
+            actualizarFichaInterna(ficha);
+            libroService.actualizarFicha(ficha);
 
-            System.out.print("Nuevo numero (actual: " + d.getNumero() + ", Enter para mantener): ");
-            String numero = scanner.nextLine().trim();
-            if (!numero.isEmpty()) {
-                d.setNumero(numero);
-            }
+            System.out.println("Ficha actualizada.");
 
-            personaService.getDomicilioService().actualizar(d);
-            System.out.println("Domicilio actualizado exitosamente.");
         } catch (Exception e) {
-            System.err.println("Error al actualizar domicilio: " + e.getMessage());
+            System.err.println("Error al actualizar ficha: " + e.getMessage());
         }
     }
 
-    public void eliminarDomicilioPorId() {
+    // ============================================================
+    // 8. ELIMINAR FICHA POR ID
+    // ============================================================
+    public void eliminarFichaPorId() {
         try {
-            System.out.print("ID del domicilio a eliminar: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            personaService.getDomicilioService().eliminar(id);
-            System.out.println("Domicilio eliminado exitosamente.");
+            System.out.print("ID de la ficha: ");
+            int idFicha = Integer.parseInt(scanner.nextLine());
+
+            libroService.eliminarFicha(idFicha);
+
+            System.out.println("Ficha eliminada.");
+
         } catch (Exception e) {
-            System.err.println("Error al eliminar domicilio: " + e.getMessage());
+            System.err.println("Error al eliminar ficha: " + e.getMessage());
         }
     }
 
-    public void actualizarDomicilioPorPersona() {
+    // ============================================================
+    // 9. ACTUALIZAR FICHA POR ID DE LIBRO
+    // ============================================================
+    public void actualizarFichaPorLibro() {
         try {
-            System.out.print("ID de la persona cuyo domicilio desea actualizar: ");
-            int personaId = Integer.parseInt(scanner.nextLine());
-            Persona p = personaService.getById(personaId);
+            System.out.print("ID del libro: ");
+            int idLibro = Integer.parseInt(scanner.nextLine());
 
-            if (p == null) {
-                System.out.println("Persona no encontrada.");
+            FichaBibliografica ficha = libroService.getFichaByLibroId(idLibro);
+
+            if (ficha == null) {
+                System.out.println("Ese libro no tiene ficha.");
                 return;
             }
 
-            if (p.getDomicilio() == null) {
-                System.out.println("La persona no tiene domicilio asociado.");
-                return;
-            }
+            actualizarFichaInterna(ficha);
+            libroService.actualizarFicha(ficha);
 
-            Domicilio d = p.getDomicilio();
-            System.out.print("Nueva calle (" + d.getCalle() + "): ");
-            String calle = scanner.nextLine().trim();
-            if (!calle.isEmpty()) {
-                d.setCalle(calle);
-            }
-
-            System.out.print("Nuevo numero (" + d.getNumero() + "): ");
-            String numero = scanner.nextLine().trim();
-            if (!numero.isEmpty()) {
-                d.setNumero(numero);
-            }
-
-            personaService.getDomicilioService().actualizar(d);
-            System.out.println("Domicilio actualizado exitosamente.");
         } catch (Exception e) {
-            System.err.println("Error al actualizar domicilio: " + e.getMessage());
+            System.err.println("Error al actualizar ficha: " + e.getMessage());
         }
     }
 
-    public void eliminarDomicilioPorPersona() {
+    // ============================================================
+    // 10. ELIMINAR FICHA POR ID DE LIBRO
+    // ============================================================
+    public void eliminarFichaPorLibro() {
         try {
-            System.out.print("ID de la persona cuyo domicilio desea eliminar: ");
-            int personaId = Integer.parseInt(scanner.nextLine());
-            Persona p = personaService.getById(personaId);
+            System.out.print("ID del libro: ");
+            int idLibro = Integer.parseInt(scanner.nextLine());
 
-            if (p == null) {
-                System.out.println("Persona no encontrada.");
-                return;
-            }
+            libroService.eliminarFichaPorLibro(idLibro);
 
-            if (p.getDomicilio() == null) {
-                System.out.println("La persona no tiene domicilio asociado.");
-                return;
-            }
+            System.out.println("Ficha eliminada.");
 
-            int domicilioId = p.getDomicilio().getId();
-            personaService.eliminarDomicilioDePersona(personaId, domicilioId);
-            System.out.println("Domicilio eliminado exitosamente y referencia actualizada.");
         } catch (Exception e) {
-            System.err.println("Error al eliminar domicilio: " + e.getMessage());
+            System.err.println("Error al eliminar ficha: " + e.getMessage());
         }
     }
 
-    private Domicilio crearDomicilio() {
-        System.out.print("Calle: ");
-        String calle = scanner.nextLine().trim();
-        System.out.print("Numero: ");
-        String numero = scanner.nextLine().trim();
-        return new Domicilio(0, calle, numero);
+    // ============================================================
+    // MÉTODOS AUXILIARES
+    // ============================================================
+    private FichaBibliografica crearFichaBibliografica(int idLibro) {
+
+        System.out.print("Título: ");
+        String titulo = scanner.nextLine().trim();
+
+        System.out.print("Autor: ");
+        String autor = scanner.nextLine().trim();
+
+        System.out.print("Año: ");
+        short anio = Short.parseShort(scanner.nextLine().trim());
+
+        System.out.print("Editorial: ");
+        String editorial = scanner.nextLine().trim();
+
+        return new FichaBibliografica(0, idLibro, titulo, autor, anio, editorial, false);
     }
 
-    private void actualizarDomicilioDePersona(Persona p) throws Exception {
-        if (p.getDomicilio() != null) {
-            System.out.print("¿Desea actualizar el domicilio? (s/n): ");
-            if (scanner.nextLine().equalsIgnoreCase("s")) {
-                System.out.print("Nueva calle (" + p.getDomicilio().getCalle() + "): ");
-                String calle = scanner.nextLine().trim();
-                if (!calle.isEmpty()) {
-                    p.getDomicilio().setCalle(calle);
-                }
+    private void actualizarFichaInterna(FichaBibliografica ficha) {
 
-                System.out.print("Nuevo numero (" + p.getDomicilio().getNumero() + "): ");
-                String numero = scanner.nextLine().trim();
-                if (!numero.isEmpty()) {
-                    p.getDomicilio().setNumero(numero);
-                }
+        System.out.print("Nuevo título (" + ficha.getTitulo() + "): ");
+        String titulo = scanner.nextLine().trim();
+        if (!titulo.isEmpty()) ficha.setTitulo(titulo);
 
-                personaService.getDomicilioService().actualizar(p.getDomicilio());
-            }
-        } else {
-            System.out.print("La persona no tiene domicilio. ¿Desea agregar uno? (s/n): ");
-            if (scanner.nextLine().equalsIgnoreCase("s")) {
-                Domicilio nuevoDom = crearDomicilio();
-                personaService.getDomicilioService().insertar(nuevoDom);
-                p.setDomicilio(nuevoDom);
-            }
-        }
+        System.out.print("Nuevo autor (" + ficha.getAutor() + "): ");
+        String autor = scanner.nextLine().trim();
+        if (!autor.isEmpty()) ficha.setAutor(autor);
+
+        System.out.print("Nuevo año (" + ficha.getAnio() + "): ");
+        String anioStr = scanner.nextLine().trim();
+        if (!anioStr.isEmpty()) ficha.setAnio(Short.parseShort(anioStr));
+
+        System.out.print("Nueva editorial (" + ficha.getEditorial() + "): ");
+        String editorial = scanner.nextLine().trim();
+        if (!editorial.isEmpty()) ficha.setEditorial(editorial);
     }
 }
