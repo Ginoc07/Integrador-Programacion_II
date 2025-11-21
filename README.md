@@ -1,10 +1,8 @@
 # Integrador-Programacion_II
 
 
-
 Programacion II Trabajo Final Integrador (TFI) - Grupo 94
 
-Fecha de entrega: 17/11/2025
 
 Link del video: -------
 
