@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class FichaBibliografica extends Base {
 
-    private Libro libro;
+    private int idLibro;
     private String titulo;
     private String autor;
     private short anio;
@@ -33,20 +33,22 @@ public class FichaBibliografica extends Base {
     }
 
     /** Constructor completo para reconstruir desde BD */
-    public FichaBibliografica(int id, String titulo, String autor, short anio, String editorial) {
-        super(id, false);
+    public FichaBibliografica(int id, int idLibro, String titulo, String autor,
+                            short anio, String editorial, boolean eliminado) {
+        super(id, eliminado);
+        this.idLibro = idLibro;
         this.titulo = titulo;
         this.autor = autor;
         this.anio = anio;
         this.editorial = editorial;
     }
 
-    public Libro getLibro() {
-        return libro;
+    public int getIdLibro() {
+        return idLibro;
     }
 
-    public void setLibro(Libro libro) {
-        this.libro = libro;
+    public void setIdLibro(int idLibro) {
+        this.idLibro = idLibro;
     }
 
     public String getTitulo() {
@@ -80,19 +82,20 @@ public class FichaBibliografica extends Base {
     public void setEditorial(String editorial) {
         this.editorial = editorial;
     }
-
+    
     @Override
     public String toString() {
         return "FichaBibliografica{" +
                 "id=" + getId() +
+                ", idLibro=" + idLibro +
                 ", titulo='" + titulo + '\'' +
                 ", autor='" + autor + '\'' +
                 ", anio=" + anio +
                 ", editorial='" + editorial + '\'' +
-                ", libroId=" + (libro != null ? libro.getId() : "null") +
                 ", eliminado=" + isEliminado() +
                 '}';
     }
+
 
     /** Igualdad basada en ID, lo cual es correcto porque Id_libro es único */
     @Override

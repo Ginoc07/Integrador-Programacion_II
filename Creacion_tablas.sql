@@ -14,3 +14,9 @@ CREATE TABLE FichaBibliografica (
     Editorial VARCHAR(200),
     FOREIGN KEY (Id_libro) REFERENCES Libro(ID)
 );
+
+ALTER TABLE Libro
+    ADD COLUMN Eliminado BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE FichaBibliografica
+    ADD COLUMN Eliminado BOOLEAN NOT NULL DEFAULT FALSE;
