@@ -1,4 +1,4 @@
-package TPI_grupo94.Models;
+package tpi_grupo94.Models;
 
 /**
  * Clase base abstracta para todas las entidades del sistema.
