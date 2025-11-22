@@ -4,8 +4,7 @@
 Programacion II Trabajo Final Integrador (TFI) - Grupo 94
 
 
-Link del video: subiendose
-
+LINK del video: https://youtu.be/5GYE21gS6Ts
 Integrantes: 
 
 Gino Canevaro – Comisión 6 
