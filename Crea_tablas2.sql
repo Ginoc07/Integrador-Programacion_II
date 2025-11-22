@@ -1,0 +1,23 @@
+CREATE SCHEMA IF NOT EXISTS BBDD;
+USE BBDD;
+
+CREATE TABLE Libro (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(200) NOT NULL,
+    autor VARCHAR(200) NOT NULL,
+    anio_publicacion INT,
+    genero VARCHAR(100),
+    eliminado BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE FichaBibliografica (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    id_libro INT NOT NULL UNIQUE,
+    titulo VARCHAR(200),
+    autor VARCHAR(200),
+    anio SMALLINT,
+    editorial VARCHAR(200),
+    isbn VARCHAR(20),
+    eliminado BOOLEAN NOT NULL DEFAULT FALSE,
+    FOREIGN KEY (id_libro) REFERENCES Libro(ID)
+);
