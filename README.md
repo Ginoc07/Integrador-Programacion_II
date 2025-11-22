@@ -22,7 +22,7 @@ El foco principal: Relación 1 -> 1 unidireccional entre Libro y FichaBibliograf
 
 ## Requisitos
 
-- Java JDK 17 o superior
+- Java JDK 8 o superior
 - Apache NetBeans (opcional, pero recomendado)
 - MySQL Server o cualquier gestor compatible con el archivo `.sql` provisto
 
