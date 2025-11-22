@@ -29,7 +29,7 @@ El foco principal: Relación 1 -> 1 unidireccional entre Libro y FichaBibliograf
 ## Creación de la base de datos
 
 1. Abrí tu gestor de base de datos (por ejemplo, MySQL Workbench).
-2. Ejecutá el script `inventario.sql` que se encuentra en la carpeta `/bd`.
+2. Ejecutá el script Crea_tablas2.sql
 3. Verificá que se hayan creado las tablas correctamente.
 4. Configurá el archivo de conexión (por ejemplo, `Conexion.java`) con los datos de tu servidor:
    ```java
